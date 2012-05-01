@@ -14,30 +14,31 @@ These examples require X/Zmodem commands to be installed.
 Sending
 ----
 
-    use XModem;
-    use IPC::Open2;
-    use FileHandle;
-    
-    my $file = shift || 'file.txt';
-    my $pid = open2(my $IN=new FileHandle, my $OUT=new FileHandle, "rz -q -X -c -a recv.txt");
-    $OUT->autoflush(1);
+```perl
+use XModem;
+use IPC::Open2;
+use FileHandle;
 
-    my $xm = new XModem($IN, $OUT, verbose => 1);
-    $xm->sendfile($file) or die "Error: $@\n";
-    
+my $file = shift || 'file.txt';
+my $pid = open2(my $IN=new FileHandle, my $OUT=new FileHandle, "rz -q -X -c -a recv.txt");
+$OUT->autoflush(1);
+
+my $xm = new XModem($IN, $OUT, verbose => 1);
+$xm->sendfile($file) or die "Error: $@\n";
+```    
 
 Receiving
 ----
 
-    use XModem;
-    use IPC::Open2;
-    use FileHandle;
-    
-    my $file = shift || 'file.txt';
-    my $pid = open2(my $IN=new FileHandle, my $OUT=new FileHandle, "sz -q -k -X $file 2>/dev/null");
-    $OUT->autoflush(1);
+```perl
+use XModem;
+use IPC::Open2;
+use FileHandle;
 
-    my $xm = new XModem($IN, $OUT, verbose => 1);
-    print "Bytes received: " . $xm->getfile('recv.txt', ascii => 1) . "\n" or die "Error: $@\n";
-    
+my $file = shift || 'file.txt';
+my $pid = open2(my $IN=new FileHandle, my $OUT=new FileHandle, "sz -q -k -X $file 2>/dev/null");
+$OUT->autoflush(1);
 
+my $xm = new XModem($IN, $OUT, verbose => 1);
+print "Bytes received: " . $xm->getfile('recv.txt', ascii => 1) . "\n" or die "Error: $@\n";
+```
